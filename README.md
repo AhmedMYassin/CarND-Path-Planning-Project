@@ -1,3 +1,22 @@
+# Path Planning Project
+Self-Driving Car Engineer Nanodegree Program
+
+## Overview
+The project aims to develop an algorithm for a vehicle to be able to drive in a simulated track with mazimum speed 50 mbh, maximum accerlration 10m/s^2 and maximum jerk 10m/s^3. The vehicle has to drive safley and avoid any kind of collision and going out of track.
+
+## Project Steps
+
+### Vehicle Path Prediction
+The waypoints in the vehicle nearby area are extracted from `highway_map.csv` and interpolated then using `Spline` library `50` points are generated to define the vehicle position within the next 90 meters. Vehicle path is defined according to the current vehicle lane, current vehicle speed and the target lane. Using spline library
+
+### Sensor Fusion Prediction
+The sensors data are used to create predictions for the nearby vehicles. Vehicle speed and position are used to define its position with respect to the predicted vehicle position.
+
+### Lane Selection
+The main target is to keep the vehilce safe and make it drive at maximum available speed. Changing lanes requires making sure that the vehicle will be safe during this shift and no collision will happen. To decide to change the lane or not, we use the sensor fusion prediction output for vehicles in the target lane to make sure that there will be safe distance between our vehicle and other vehicles during and after the vehicle lane shift.
+
+<img src="https://github.com/AhmedMYassin/Path-Planning-Project/blob/master/data/10_miles.png"> 
+
 # CarND-Path-Planning-Project
 Self-Driving Car Engineer Nanodegree Program
    
@@ -105,36 +124,4 @@ Please (do your best to) stick to [Google's C++ style guide](https://google.gith
 Note: regardless of the changes you make, your project must be buildable using
 cmake and make!
 
-
-## Call for IDE Profiles Pull Requests
-
-Help your fellow students!
-
-We decided to create Makefiles with cmake to keep this project as platform
-agnostic as possible. Similarly, we omitted IDE profiles in order to ensure
-that students don't feel pressured to use one IDE or another.
-
-However! I'd love to help people get up and running with their IDEs of choice.
-If you've created a profile for an IDE that you think other students would
-appreciate, we'd love to have you add the requisite profile files and
-instructions to ide_profiles/. For example if you wanted to add a VS Code
-profile, you'd add:
-
-* /ide_profiles/vscode/.vscode
-* /ide_profiles/vscode/README.md
-
-The README should explain what the profile does, how to take advantage of it,
-and how to install it.
-
-Frankly, I've never been involved in a project with multiple IDE profiles
-before. I believe the best way to handle this would be to keep them out of the
-repo root to avoid clutter. My expectation is that most profiles will include
-instructions to copy files to a new location to get picked up by the IDE, but
-that's just a guess.
-
-One last note here: regardless of the IDE used, every submitted project must
-still be compilable with cmake and make./
-
-## How to write a README
-A well written README file can enhance your project and portfolio.  Develop your abilities to create professional README files by completing [this free course](https://www.udacity.com/course/writing-readmes--ud777).
 
