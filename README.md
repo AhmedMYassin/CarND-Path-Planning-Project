@@ -7,7 +7,7 @@ The project aims to develop an algorithm for a vehicle to be able to drive in a 
 ## Project Steps
 
 ### Vehicle Path Prediction
-The waypoints in the vehicle nearby area are extracted from `highway_map.csv` and interpolated then using `Spline` library `50` points are generated to define the vehicle position within the next 90 meters. Vehicle path is defined according to the current vehicle lane, current vehicle speed and the target lane. Using spline library
+The waypoints in the vehicle nearby area are extracted from `highway_map.csv` and interpolated then using `Spline` library `50` points are generated to define the vehicle position within the next 90 meters. Vehicle path is defined according to the current vehicle lane, current vehicle speed and the target lane.
 
 ### Sensor Fusion Prediction
 The sensors data are used to create predictions for the nearby vehicles. Vehicle speed and position are used to define its position with respect to the predicted vehicle position.
