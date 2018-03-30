@@ -67,7 +67,7 @@ void DefineVehiclePath(vector<double> & next_x_vals,
 		int target_dist;
 		if(car_data.target_lane != car_data.cur_lane)
 		{
-			target_dist = int((car_data.ref_vel/30) * dist);
+			target_dist = int((car_data.ref_vel/25) * dist);
 		}
 		else
 		{
@@ -134,10 +134,11 @@ void DefineVehiclePath(vector<double> & next_x_vals,
 }
 
 void SetSpeedAndTargetLane(vector< vector<double> > & sensor_fusion,
-						   int path_size,
+						   const int path_size,
 						   double & car_s_val,
+						   const double & car_d,
 						   double & ref_velocity,
-						   int & cur_lane,
+						   const int & cur_lane,
 						   int & target_lane,
 						   vehicle_state & v_state)
 {
@@ -146,9 +147,9 @@ void SetSpeedAndTargetLane(vector< vector<double> > & sensor_fusion,
   	bool left_lane_available = false;
 
   	int closest_forward_left_car_s = 1000000;
-  	int closest_forward_left_car_speed = 0;
+  	int closest_forward_left_car_speed = 10000;
   	int closest_forward_right_car_s = 1000000;
-  	int closest_forward_right_car_speed = 0;
+  	int closest_forward_right_car_speed = 10000;
   	int forward_car_speed = 0;
   	int forward_car_s = 100000;
 
@@ -172,13 +173,13 @@ void SetSpeedAndTargetLane(vector< vector<double> > & sensor_fusion,
   	{
   		float d = sensor_fusion[i][6];
   		double vx = sensor_fusion[i][3];
-			double vy = sensor_fusion[i][4];
-			double x_car_speed = sqrt(vx*vx + vy*vy);
+		double vy = sensor_fusion[i][4];
+		double x_car_speed = sqrt(vx*vx + vy*vy);
   		double x_car_s = sensor_fusion[i][5];
 
   		x_car_s += (0.02 * path_size * x_car_speed);
 
-  		if((d < (4*cur_lane+4)) && (d > (4*cur_lane)))
+  		if((d < (4*cur_lane+4.8)) && (d > (4*cur_lane-0.8)))
   		{
   			if(x_car_s < forward_car_s && x_car_s > car_s_val)
   			{
@@ -186,17 +187,16 @@ void SetSpeedAndTargetLane(vector< vector<double> > & sensor_fusion,
   				forward_car_speed = x_car_speed;
   			}
 
-  			if((x_car_s > car_s_val) && ((x_car_s - car_s_val) < 30))
+  			if((x_car_s > car_s_val) && ((x_car_s - car_s_val) < (ref_velocity*0.68)))
   			{
   				too_close = true;
   			}
   		}
-  		else
-  		{
-  			if((d > (4*cur_lane + 4)) && (d < (4*cur_lane + 8)) && left_lane_available)
+
+  			if((d > (4*cur_lane + 3.2)) && (d < (4*cur_lane + 8.8)) && left_lane_available)
   			{
-  				if(((x_car_s > car_s_val) && ((x_car_s - car_s_val) < 35)) ||
-  				   ((x_car_s < car_s_val) && ((car_s_val - x_car_s) < 10)))
+  				if(((x_car_s > car_s_val) && ((x_car_s - car_s_val) < (ref_velocity*0.68))) ||
+  				   ((x_car_s < car_s_val) && ((car_s_val - x_car_s) < (ref_velocity*0.38))))
   				{
   					left_lane_available = false;
   				}
@@ -206,10 +206,10 @@ void SetSpeedAndTargetLane(vector< vector<double> > & sensor_fusion,
   					closest_forward_left_car_speed = x_car_speed;
 				}
   			}
-  			else if((d > (4*cur_lane - 4)) && (d < (4*cur_lane)) && right_lane_available)
+  			else if((d > (4*cur_lane - 4.8)) && (d < (4*cur_lane + 0.8)) && right_lane_available)
       		{
-  				if(((x_car_s > car_s_val) && ((x_car_s - car_s_val) < 35)) ||
-  				   ((x_car_s < car_s_val) && ((car_s_val - x_car_s) < 10)))
+  				if(((x_car_s > car_s_val) && ((x_car_s - car_s_val) < (ref_velocity*0.68))) ||
+  				   ((x_car_s < car_s_val) && ((car_s_val - x_car_s) < (ref_velocity*0.38))))
    				{
   					right_lane_available = false;
    				}
@@ -219,26 +219,24 @@ void SetSpeedAndTargetLane(vector< vector<double> > & sensor_fusion,
   					closest_forward_right_car_speed = x_car_speed;
 				}
   			}
-  		}
+  		
   	}
 
   	if(v_state == keep_lane)
   	{
   		if(too_close)
   		{
-  			if(left_lane_available && !right_lane_available)
+  			if(left_lane_available && !right_lane_available && (closest_forward_left_car_speed >= forward_car_speed))
   			{
-  				target_lane = cur_lane + 1;
+  			    target_lane = cur_lane + 1;
   			    v_state = change_lane_left;
-  			    ref_velocity -= (0.75 * REFERENCE_ACCELERATION);
   			}
-  			else if(right_lane_available && !left_lane_available)
+  			else if(right_lane_available && !left_lane_available && (closest_forward_right_car_speed >= forward_car_speed))
   			{
-  				target_lane = cur_lane - 1;
+  			    target_lane = cur_lane - 1;
   			    v_state = change_lane_right;
-  			  ref_velocity -= (0.75 * REFERENCE_ACCELERATION);
   			}
-  			else if(right_lane_available && left_lane_available)
+  			else if(right_lane_available && left_lane_available && ((closest_forward_left_car_speed >= forward_car_speed) || (closest_forward_right_car_speed >= forward_car_speed)))
   			{
   				if(closest_forward_right_car_speed > closest_forward_left_car_speed)
   				{
@@ -250,13 +248,12 @@ void SetSpeedAndTargetLane(vector< vector<double> > & sensor_fusion,
       				target_lane = cur_lane + 1;
       			    v_state = change_lane_left;
   				}
-  				ref_velocity -= (0.75 * REFERENCE_ACCELERATION);
   			}
   			else
   			{
-  				if(ref_velocity > forward_car_speed && (forward_car_s - car_s_val) < 30)
+  				if(ref_velocity > forward_car_speed && (forward_car_s - car_s_val) < (ref_velocity*0.68))
   				{
-  					ref_velocity -= (0.75 * REFERENCE_ACCELERATION);
+  					ref_velocity -= REFERENCE_ACCELERATION;
   				}
   			}
   		}
@@ -272,11 +269,17 @@ void SetSpeedAndTargetLane(vector< vector<double> > & sensor_fusion,
   	}
   	else
   	{
-  		if(target_lane == cur_lane)
+  		if(fabs(((target_lane*4)+2) - car_d) < 0.5)
   		{
   			v_state = keep_lane;
-  			ref_velocity += REFERENCE_ACCELERATION;
+			if(ref_velocity < REFERENCE_VELOCITY)
+      			{
+      				ref_velocity += REFERENCE_ACCELERATION;
+      			}
+			else
+			{
+				ref_velocity -= REFERENCE_ACCELERATION;
+			}
   		}
-  		ref_velocity -= (0.75 * REFERENCE_ACCELERATION);
   	}
 }

@@ -7,9 +7,9 @@
 using namespace std;
 
 #define EST_PATH_PTS_NO 50
-#define REFERENCE_VELOCITY 49
-#define REFERENCE_ACCELERATION 0.5
-#define TARGET_DISTANCE 65
+#define REFERENCE_VELOCITY 49.5
+#define REFERENCE_ACCELERATION 0.4
+#define TARGET_DISTANCE 90
 #define LANES_NO 3
 
 struct vehicle_data
@@ -39,10 +39,11 @@ void DefineVehiclePath(vector<double> & next_x_vals,
 					   const vehicle_data & data);
 
 void SetSpeedAndTargetLane(vector< vector<double> > & sensor_fusion,
-						   int path_size,
+						   const int path_size,
 						   double & car_s_val,
+						   const double & car_d,
 						   double & ref_velocity,
-						   int & cur_lane,
+						   const int & cur_lane,
 						   int & target_lane,
 						   vehicle_state & v_State);
 

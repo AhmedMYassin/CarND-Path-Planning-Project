@@ -128,6 +128,7 @@ int main() {
           	SetSpeedAndTargetLane(sensor_fusion,
           						  previous_path_x.size(),
           				   		  car_s_val,
+								  car_d,
           				  		  ref_velocity,
 								  cur_lane,
 								  target_lane,
