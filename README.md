@@ -15,7 +15,7 @@ The sensors data are used to create predictions for the nearby vehicles. Vehicle
 ### Lane Selection
 The main target is to keep the vehilce safe and make it drive at maximum available speed. Changing lanes requires making sure that the vehicle will be safe during this shift and no collision will happen. To decide to change the lane or not, we use the sensor fusion prediction output for vehicles in the target lane to make sure that there will be safe distance between our vehicle and other vehicles during and after the vehicle lane shift.
 
-<img src="https://github.com/AhmedMYassin/Path-Planning-Project/blob/master/data/10_miles.png"> 
+<img src="https://github.com/AhmedMYassin/Path-Planning-Project/blob/master/data/21_miles.png"> 
 
 # CarND-Path-Planning-Project
 Self-Driving Car Engineer Nanodegree Program
