@@ -2,7 +2,7 @@
 Self-Driving Car Engineer Nanodegree Program
 
 ## Overview
-The project aims to develop an algorithm for a vehicle to be able to drive in a simulated track with maximum speed 50 mbh, maximum acceleration 10m/s^2 and maximum jerk 10m/s^3. The vehicle has to drive safely and avoid any kind of collision and going out of track.
+The project aims to develop an algorithm for a vehicle to be able to drive in a simulated track with maximum speed `50 mbh`, maximum acceleration `10m/s^2` and maximum `jerk 10m/s^3`. The vehicle has to drive safely and avoid any kind of collision and going out of track.
 
 ## Project Steps
 
@@ -15,10 +15,10 @@ The sensors data are used to create predictions for the nearby vehicles. Vehicle
 ### Lane Selection
 The main target is to keep the vehilce safe and make it drive at maximum available speed. Changing lanes requires making sure that the vehicle will be safe during this shift and no collision will happen. To decide to change the lane or not, we use the sensor fusion prediction output for vehicles in the target lane to make sure that there will be safe distance between our vehicle and other vehicles during and after the vehicle lane shift.
 
-<img src="https://github.com/AhmedMYassin/Path-Planning-Project/blob/master/data/21_miles.png"> 
+Total Run Time: `29 minutes`
+Total Run Distance: `21 miles`
 
-# CarND-Path-Planning-Project
-Self-Driving Car Engineer Nanodegree Program
+<img src="https://github.com/AhmedMYassin/Path-Planning-Project/blob/master/data/21_miles.png"> 
    
 ### Simulator.
 You can download the Term3 Simulator which contains the Path Planning Project from the [releases tab (https://github.com/udacity/self-driving-car-sim/releases/tag/T3_v1.2).
