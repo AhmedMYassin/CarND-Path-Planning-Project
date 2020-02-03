@@ -2,7 +2,7 @@
 Self-Driving Car Engineer Nanodegree Program
 
 ## Overview
-The project aims to develop an algorithm for a vehicle to be able to drive in a simulated track with maximum speed `50 mbh`, maximum acceleration `10m/s^2` and maximum `jerk 10m/s^3`. The vehicle has to drive safely and avoid any kind of collision and going out of track.
+The project aims to develop an algorithm for a vehicle to be able to drive in a simulated track with maximum speed `50 mph`, maximum acceleration `10m/s^2` and maximum `jerk 10m/s^3`. The vehicle has to drive safely and avoid any kind of collision and going out of track.
 
 ## Project Details
 
